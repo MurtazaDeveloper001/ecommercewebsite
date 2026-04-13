@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Detail - EShopper</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #FE980F;
+            --secondary-color: #333333;
+            --light-gray: #F5F5F5;
+            --border-color: #E0E0E0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            color: var(--secondary-color);
+            background-color: #fff;
+        }
+
+        /* Header Styles */
+        .header-top {
+            background-color: var(--light-gray);
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 12px;
+        }
+
+        .navbar {
+            background-color: #fff !important;
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 0;
+        }
+
+        .navbar-brand {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color) !important;
+        }
+
+        .nav-link {
+            color: var(--secondary-color) !important;
+            margin: 0 10px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            background-color: var(--light-gray);
+            padding: 15px 0;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .breadcrumb-item {
+            color: var(--secondary-color);
+        }
+
+        .breadcrumb-item.active {
+            color: var(--primary-color);
+        }
+
+        /* Product Detail Section */
+        .product-detail-section {
+            padding: 40px 0;
+        }
+
+        .product-images {
+            position: relative;
+        }
+
+        .main-image {
+            width: 100%;
+            height: auto;
+            background-color: var(--light-gray);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+
+        .thumbnail-images {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+        }
+
+        .thumbnail-images img {
+            width: 80px;
+            height: 80px;
+            border: 2px solid var(--border-color);
+            border-radius: 5px;
+            cursor: pointer;
+            object-fit: cover;
+            transition: border-color 0.3s ease;
+        }
+
+        .thumbnail-images img:hover,
+        .thumbnail-images img.active {
+            border-color: var(--primary-color);
+        }
+
+        /* Product Info */
+        .product-info h1 {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+        }
+
+        .product-rating {
+            margin-bottom: 20px;
+        }
+
+        .stars {
+            color: var(--primary-color);
+            font-size: 14px;
+        }
+
+        .review-count {
+            color: #999;
+            margin-left: 10px;
+            font-size: 14px;
+        }
+
+        .price-section {
+            margin: 25px 0;
+            padding: 20px 0;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .product-price {
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .original-price {
+            font-size: 18px;
+            color: #999;
+            text-decoration: line-through;
+            margin-right: 15px;
+        }
+
+        .discount-badge {
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 5px 12px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .product-description {
+            color: #666;
+            line-height: 1.6;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+
+        /* Quantity Selector */
+        .quantity-selector {
+            margin: 25px 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .quantity-label {
+            font-weight: 600;
+            color: var(--secondary-color);
+            min-width: 80px;
+        }
+
+        .qty-input-group {
+            display: flex;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            width: fit-content;
+        }
+
+        .qty-btn {
+            background-color: var(--light-gray);
+            border: none;
+            border-right: 1px solid var(--border-color);
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .qty-btn:hover {
+            background-color: #ddd;
+        }
+
+        .qty-btn:last-child {
+            border-right: none;
+            border-left: 1px solid var(--border-color);
+            border-right: none;
+        }
+
+        .qty-input {
+            border: none;
+            width: 50px;
+            text-align: center;
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        .qty-input:focus {
+            outline: none;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            margin: 30px 0;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn-add-cart {
+            background-color: var(--primary-color);
+            color: #fff;
+            border: none;
+            padding: 12px 40px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .btn-add-cart:hover {
+            background-color: #e67e0c;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .btn-wishlist {
+            background-color: #fff;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            padding: 10px 25px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-wishlist:hover {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+
+        /* Additional Info */
+        .product-details-table {
+            margin: 30px 0;
+            width: 100%;
+        }
+
+        .product-details-table tr {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .product-details-table td {
+            padding: 12px 0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .product-details-table td:first-child {
+            font-weight: 600;
+            color: var(--secondary-color);
+            min-width: 150px;
+        }
+
+        /* Related Products Section */
+        .related-products {
+            margin-top: 50px;
+            padding-top: 40px;
+            border-top: 2px solid var(--border-color);
+        }
+
+        .related-products h3 {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-bottom: 30px;
+        }
+
+        .product-card {
+            background-color: var(--light-gray);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border-radius: 3px;
+        }
+
+        .product-card h5 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+            min-height: 35px;
+        }
+
+        .product-card .price {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 12px;
+        }
+
+        .product-card .btn-sm {
+            background-color: var(--primary-color);
+            border: none;
+            padding: 8px 16px;
+            font-size: 12px;
+            transition: background-color 0.3s ease;
+        }
+
+        .product-card .btn-sm:hover {
+            background-color: #e67e0c;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .product-info h1 {
+                font-size: 22px;
+            }
+
+            .product-price {
+                font-size: 24px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn-add-cart,
+            .btn-wishlist {
+                width: 100%;
+                min-width: auto;
+            }
+
+            .quantity-selector {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .related-products h3 {
+                font-size: 20px;
+            }
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--secondary-color);
+            color: #fff;
+            padding: 40px 0 20px;
+            margin-top: 50px;
+        }
+
+        .footer h5 {
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .footer a {
+            color: #bbb;
+            text-decoration: none;
+            font-size: 14px;
+            display: block;
+            margin-bottom: 10px;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: var(--primary-color);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #555;
+            padding-top: 20px;
+            margin-top: 30px;
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header-top">
+        <div class="container">
+            <p class="mb-0">Free shipping for orders over $50 | Returns accepted within 30 days</p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-shopping-bag"></i> EShopper
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-home"></i> Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-tags"></i> Shop</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-circle-info"></i> About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-envelope"></i> Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i> Cart</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="#" style="color: var(--secondary-color); text-decoration: none;">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#" style="color: var(--secondary-color); text-decoration: none;">Electronics</a></li>
+                    <li class="breadcrumb-item active">[PRODUCT_NAME_PLACEHOLDER]</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Product Detail Section -->
+    <section class="product-detail-section">
+        <div class="container">
+            <div class="row">
+                <!-- Product Images -->
+                <div class="col-lg-5 col-md-6 mb-4">
+                    <div class="product-images">
+                        <img src="https://via.placeholder.com/500x500?text=Product+Image" alt="Product" class="main-image" id="mainImage">
+                        <div class="thumbnail-images">
+                            <img src="https://via.placeholder.com/80x80?text=1" alt="Thumbnail 1" class="thumbnail-image active" onclick="changeImage(this.src)">
+                            <img src="https://via.placeholder.com/80x80?text=2" alt="Thumbnail 2" class="thumbnail-image" onclick="changeImage(this.src)">
+                            <img src="https://via.placeholder.com/80x80?text=3" alt="Thumbnail 3" class="thumbnail-image" onclick="changeImage(this.src)">
+                            <img src="https://via.placeholder.com/80x80?text=4" alt="Thumbnail 4" class="thumbnail-image" onclick="changeImage(this.src)">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Info -->
+                <div class="col-lg-7 col-md-6">
+                    <div class="product-info">
+                        <h1>[PRODUCT_NAME_PLACEHOLDER]</h1>
+                        
+                        <!-- Rating -->
+                        <div class="product-rating">
+                            <span class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </span>
+                            <span class="review-count">(127 reviews)</span>
+                        </div>
+
+                        <!-- Price Section -->
+                        <div class="price-section">
+                            <div class="mb-3">
+                                <span class="original-price">$[ORIGINAL_PRICE_PLACEHOLDER]</span>
+                                <span class="product-price">$[SALE_PRICE_PLACEHOLDER]</span>
+                                <span class="discount-badge">-20%</span>
+                            </div>
+                            <p class="text-success"><i class="fas fa-check-circle"></i> In Stock (15 items available)</p>
+                        </div>
+
+                        <!-- Description -->
+                        <p class="product-description">
+                            [PRODUCT_DESCRIPTION_PLACEHOLDER] Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                            This product offers exceptional quality and durability for everyday use. Perfect for anyone 
+                            looking for reliability and style combined.
+                        </p>
+
+                        <!-- Key Features -->
+                        <div class="mb-4">
+                            <h6 style="font-weight: 600; color: var(--secondary-color); margin-bottom: 12px;">Key Features:</h6>
+                            <ul style="list-style: none; padding: 0; color: #666; font-size: 14px;">
+                                <li><i class="fas fa-check" style="color: var(--primary-color); margin-right: 8px;"></i> High-quality materials</li>
+                                <li><i class="fas fa-check" style="color: var(--primary-color); margin-right: 8px;"></i> Long-lasting durability</li>
+                                <li><i class="fas fa-check" style="color: var(--primary-color); margin-right: 8px;"></i> Eco-friendly packaging</li>
+                                <li><i class="fas fa-check" style="color: var(--primary-color); margin-right: 8px;"></i> 1-year warranty included</li>
+                            </ul>
+                        </div>
+
+                        <!-- Quantity Selector -->
+                        <div class="quantity-selector">
+                            <span class="quantity-label">Quantity:</span>
+                            <div class="qty-input-group">
+                                <button class="qty-btn" onclick="decreaseQty()">-</button>
+                                <input type="number" class="qty-input" id="quantity" value="1" min="1" max="100">
+                                <button class="qty-btn" onclick="increaseQty()">+</button>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="action-buttons">
+                            <button class="btn-add-cart" onclick="addToCart()">
+                                <i class="fas fa-shopping-cart"></i> Add to Cart
+                            </button>
+                            <button class="btn-wishlist" onclick="addToWishlist()">
+                                <i class="far fa-heart"></i> Add to Wishlist
+                            </button>
+                        </div>
+
+                        <!-- Product Details -->
+                        <table class="product-details-table">
+                            <tr>
+                                <td>SKU:</td>
+                                <td>[SKU_PLACEHOLDER]</td>
+                            </tr>
+                            <tr>
+                                <td>Category:</td>
+                                <td>[CATEGORY_PLACEHOLDER]</td>
+                            </tr>
+                            <tr>
+                                <td>Brand:</td>
+                                <td>[BRAND_PLACEHOLDER]</td>
+                            </tr>
+                            <tr>
+                                <td>Warranty:</td>
+                                <td>1 Year Manufacturing Warranty</td>
+                            </tr>
+                            <tr>
+                                <td>Shipping:</td>
+                                <td>Free Shipping (Orders over $50)</td>
+                            </tr>
+                        </table>
+
+                        <!-- Share Section -->
+                        <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border-color);">
+                            <span style="color: var(--secondary-color); font-weight: 600; display: block; margin-bottom: 10px;">Share:</span>
+                            <a href="#" style="display: inline-block; width: 35px; height: 35px; background-color: var(--light-gray); border-radius: 50%; text-align: center; line-height: 35px; color: var(--primary-color); margin-right: 10px; transition: all 0.3s ease;" onmouseover="this.style.backgroundColor='var(--primary-color)'; this.style.color='#fff';" onmouseout="this.style.backgroundColor='var(--light-gray)'; this.style.color='var(--primary-color)';">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" style="display: inline-block; width: 35px; height: 35px; background-color: var(--light-gray); border-radius: 50%; text-align: center; line-height: 35px; color: var(--primary-color); margin-right: 10px; transition: all 0.3s ease;" onmouseover="this.style.backgroundColor='var(--primary-color)'; this.style.color='#fff';" onmouseout="this.style.backgroundColor='var(--light-gray)'; this.style.color='var(--primary-color)';">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" style="display: inline-block; width: 35px; height: 35px; background-color: var(--light-gray); border-radius: 50%; text-align: center; line-height: 35px; color: var(--primary-color); margin-right: 10px; transition: all 0.3s ease;" onmouseover="this.style.backgroundColor='var(--primary-color)'; this.style.color='#fff';" onmouseout="this.style.backgroundColor='var(--light-gray)'; this.style.color='var(--primary-color)';">
+                                <i class="fab fa-pinterest"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Related Products Section -->
+            <div class="related-products">
+                <h3>Related Products</h3>
+                <div class="row">
+                    <!-- Related Product 1 -->
+                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                        <div class="product-card">
+                            <img src="https://via.placeholder.com/250x250?text=Related+1" alt="Related Product">
+                            <h5>Related Product 1</h5>
+                            <div class="product-rating" style="font-size: 12px;">
+                                <span class="stars"><i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i></span>
+                            </div>
+                            <div class="price">$49.99</div>
+                            <button class="btn btn-sm btn-primary">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- Related Product 2 -->
+                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                        <div class="product-card">
+                            <img src="https://via.placeholder.com/250x250?text=Related+2" alt="Related Product">
+                            <h5>Related Product 2</h5>
+                            <div class="product-rating" style="font-size: 12px;">
+                                <span class="stars"><i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star-half-alt"></i></span>
+                            </div>
+                            <div class="price">$39.99</div>
+                            <button class="btn btn-sm btn-primary">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- Related Product 3 -->
+                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                        <div class="product-card">
+                            <img src="https://via.placeholder.com/250x250?text=Related+3" alt="Related Product">
+                            <h5>Related Product 3</h5>
+                            <div class="product-rating" style="font-size: 12px;">
+                                <span class="stars"><i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i></span>
+                            </div>
+                            <div class="price">$59.99</div>
+                            <button class="btn btn-sm btn-primary">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- Related Product 4 -->
+                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                        <div class="product-card">
+                            <img src="https://via.placeholder.com/250x250?text=Related+4" alt="Related Product">
+                            <h5>Related Product 4</h5>
+                            <div class="product-rating" style="font-size: 12px;">
+                                <span class="stars"><i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i></span>
+                            </div>
+                            <div class="price">$44.99</div>
+                            <button class="btn btn-sm btn-primary">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 mb-4">
+                    <h5>About EShopper</h5>
+                    <p style="font-size: 14px; line-height: 1.6; color: #bbb;">Your one-stop shop for quality products at unbeatable prices. Fast shipping, easy returns, great service.</p>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5>Quick Links</h5>
+                    <a href="#">Home</a>
+                    <a href="#">Shop</a>
+                    <a href="#">About Us</a>
+                    <a href="#">Contact Us</a>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5>Customer Service</h5>
+                    <a href="#">Track Order</a>
+                    <a href="#">Returns</a>
+                    <a href="#">Shipping Info</a>
+                    <a href="#">FAQ</a>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5>Contact Info</h5>
+                    <p style="font-size: 14px; color: #bbb;"><i class="fas fa-phone"></i> 1-800-SHOP-001</p>
+                    <p style="font-size: 14px; color: #bbb;"><i class="fas fa-envelope"></i> support@eshopper.com</p>
+                    <p style="font-size: 14px; color: #bbb;"><i class="fas fa-map-marker-alt"></i> 123 Street, City, Country</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 EShopper. All Rights Reserved. | <a href="#" style="color: #999; text-decoration: none;">Privacy Policy</a> | <a href="#" style="color: #999; text-decoration: none;">Terms & Conditions</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Change main image on thumbnail click
+        function changeImage(src) {
+            document.getElementById('mainImage').src = src;
+            document.querySelectorAll('.thumbnail-image').forEach(img => img.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        // Quantity selector functions
+        function increaseQty() {
+            const qtyInput = document.getElementById('quantity');
+            qtyInput.value = parseInt(qtyInput.value) + 1;
+        }
+
+        function decreaseQty() {
+            const qtyInput = document.getElementById('quantity');
+            if (qtyInput.value > 1) {
+                qtyInput.value = parseInt(qtyInput.value) - 1;
+            }
+        }
+
+        // Add to cart function
+        function addToCart() {
+            const quantity = document.getElementById('quantity').value;
+            alert(`Added ${quantity} item(s) to cart!\n\nNote: Connect this to your backend API.`);
+            // Replace with actual API call:
+            // fetch('/api/cart/add', { method: 'POST', body: JSON.stringify({ productId, quantity }) })
+        }
+
+        // Add to wishlist function
+        function addToWishlist() {
+            alert('Added to Wishlist!\n\nNote: Connect this to your backend API.');
+            // Replace with actual API call
+        }
+    </script>
+</body>
+</html>
